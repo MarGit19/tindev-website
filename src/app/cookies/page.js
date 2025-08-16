@@ -96,7 +96,7 @@ export default function CookiePolicy() {
 
                 <h3 className="text-xl font-semibold mb-4 text-mint-green">Cookie Consent Manager</h3>
                 <p className="mb-4">
-                  When you first visit our website, you'll see a cookie consent banner where you can:
+                  When you first visit our website, you&rsquo;ll see a cookie consent banner where you can:
                 </p>
                 <ul className="list-disc list-inside space-y-2">
                   <li>Accept all cookies for the best experience</li>
@@ -111,7 +111,7 @@ export default function CookiePolicy() {
                 <p className="mb-4">Disabling certain cookies may affect functionality:</p>
                 <ul className="list-disc list-inside space-y-3">
                   <li><strong>Essential Cookies:</strong> Cannot be disabled; Services may not function properly</li>
-                  <li><strong>Performance Cookies:</strong> We can't improve Services based on usage data</li>
+                  <li><strong>Performance Cookies:</strong> We can&rsquo;t improve Services based on usage data</li>
                   <li><strong>Functional Cookies:</strong> Loss of personalization and saved preferences</li>
                   <li><strong>Marketing Cookies:</strong> Less relevant advertising and content</li>
                 </ul>

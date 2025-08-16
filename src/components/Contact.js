@@ -250,7 +250,7 @@ const Contact = () => {
                 Start the Conversation
               </h3>
               <p className="text-white/60 font-body">
-                Tell us about your needs and we'll get back to you within 24 hours
+                Tell us about your needs and we&rsquo;ll get back to you within 24 hours
               </p>
             </div>
             

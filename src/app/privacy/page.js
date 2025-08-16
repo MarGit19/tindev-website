@@ -22,7 +22,7 @@ export default function PrivacyPolicy() {
               <section className="glass-card rounded-3xl p-8">
                 <h2 className="text-3xl font-display font-semibold mb-6 text-mint-green">Introduction</h2>
                 <p className="mb-4">
-                  TinDev Studios ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our software applications, including our AI Resume Builder, Habit Tracker, Meeting Summarizer, Social Post Generator, and Skill Tracker (collectively, the "Services").
+                  TinDev Studios (&ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our software applications, including our AI Resume Builder, Habit Tracker, Meeting Summarizer, Social Post Generator, and Skill Tracker (collectively, the &ldquo;Services&rdquo;).
                 </p>
                 <p>
                   By using our Services, you agree to the collection and use of information in accordance with this Privacy Policy.

@@ -22,7 +22,7 @@ export default function TermsOfService() {
               <section className="glass-card rounded-3xl p-8">
                 <h2 className="text-3xl font-display font-semibold mb-6 text-mint-green">Agreement to Terms</h2>
                 <p className="mb-4">
-                  These Terms of Service ("Terms") govern your use of TinDev Studios' software applications and services, including our AI Resume Builder, Habit Tracker, Meeting Summarizer, Social Post Generator, and Skill Tracker (the "Services").
+                  These Terms of Service (&ldquo;Terms&rdquo;) govern your use of TinDev Studios&rsquo; software applications and services, including our AI Resume Builder, Habit Tracker, Meeting Summarizer, Social Post Generator, and Skill Tracker (the &ldquo;Services&rdquo;).
                 </p>
                 <p>
                   By accessing or using our Services, you agree to be bound by these Terms. If you disagree with any part of these Terms, you may not access or use our Services.
@@ -73,7 +73,7 @@ export default function TermsOfService() {
                   <li><strong>Premium Subscriptions:</strong> Advanced features available through monthly or annual plans</li>
                   <li><strong>Billing:</strong> Subscriptions automatically renew unless cancelled</li>
                   <li><strong>Refunds:</strong> Available within 30 days of purchase for annual plans</li>
-                  <li><strong>Price Changes:</strong> We reserve the right to modify pricing with 30 days' notice</li>
+                  <li><strong>Price Changes:</strong>We reserve the right to modify pricing with 30 days&rsquo; notice</li>
                   <li><strong>Taxes:</strong> You are responsible for applicable taxes in your jurisdiction</li>
                 </ul>
               </section>

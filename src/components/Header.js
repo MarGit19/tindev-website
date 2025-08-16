@@ -25,7 +25,7 @@ const Header = () => {
     { href: '#contact', label: 'Contact' },
   ];
 
-  const handleNavClick = (href, label) => {
+  const handleNavClick = (href) => {
     setIsMenuOpen(false);
     
     // If we're on a legal page, go to home first then scroll
@@ -52,6 +52,15 @@ const Header = () => {
   const handleLogoClick = () => {
     setIsMenuOpen(false);
     router.push('/');
+  };
+
+  const getLabelFromHref = (href) => {
+    switch(href) {
+      case '#about': return 'About';
+      case '#products': return 'Products';
+      case '#contact': return 'Contact';
+      default: return '';
+    }
   };
 
   return (
@@ -85,10 +94,10 @@ const Header = () => {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
                 <button
-                  onClick={() => handleNavClick(link.href, link.label)}
+                  onClick={() => handleNavClick(link.href)}
                   className="relative text-white/90 hover:text-mint-green transition-all duration-300 font-medium text-lg group"
                 >
-                  {link.label}
+                  {getLabelFromHref(link.href)}
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-mint-green to-electric-blue transition-all duration-300 group-hover:w-full"></span>
                 </button>
               </motion.li>
@@ -97,7 +106,7 @@ const Header = () => {
 
           {/* Premium Contact Button */}
           <motion.button
-            onClick={() => handleNavClick('#contact', 'Contact')}
+            onClick={() => handleNavClick('#contact')}
             className="hidden md:block btn-primary font-semibold transition-all duration-300 hover:scale-105"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -131,16 +140,16 @@ const Header = () => {
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <button
-                    onClick={() => handleNavClick(link.href, link.label)}
+                    onClick={() => handleNavClick(link.href)}
                     className="block w-full text-left text-white/90 hover:text-mint-green transition-colors duration-300 font-medium text-lg py-2"
                   >
-                    {link.label}
+                    {getLabelFromHref(link.href)}
                   </button>
                 </li>
               ))}
               <li className="pt-4">
                 <button
-                  onClick={() => handleNavClick('#contact', 'Contact')}
+                  onClick={() => handleNavClick('#contact')}
                   className="block w-full btn-primary text-center font-semibold"
                 >
                   Get Started

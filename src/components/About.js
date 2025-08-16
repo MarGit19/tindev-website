@@ -107,7 +107,7 @@ const About = () => {
             </h3>
             
             <p className="text-xl text-white/80 max-w-4xl mx-auto font-body leading-relaxed">
-              We're not just building software—we're crafting solutions that integrate seamlessly into your daily workflow. 
+              We&rsquo;re not just building software&mdash;we&rsquo;re crafting solutions that integrate seamlessly into your daily workflow.
               Every product is designed with one goal: to make your life more efficient, productive, and enjoyable. 
               <span className="text-mint-green font-semibold"> Experience the difference of tools built for real people, real needs.</span>
             </p>

@@ -52,7 +52,7 @@ export default function GDPRCompliance() {
                <p className="mb-4">Request deletion of your personal data when:</p>
                <ul className="list-disc list-inside space-y-2 mb-6">
                  <li>The data is no longer necessary for the original purpose</li>
-                 <li>You withdraw consent and there's no other legal basis</li>
+                 <li>You withdraw consent and there&rsquo;s no other legal basis</li>
                  <li>You object to processing and there are no overriding legitimate grounds</li>
                  <li>The data was unlawfully processed</li>
                  <li>Deletion is required for legal compliance</li>
@@ -189,7 +189,7 @@ export default function GDPRCompliance() {
              
              <section className="glass-card rounded-3xl p-8">
                <h2 className="text-3xl font-display font-semibold mb-6 text-electric-blue">Complaints and Supervisory Authority</h2>
-               <p className="mb-4">If you're unsatisfied with our response to your GDPR request, you have the right to lodge a complaint with:</p>
+               <p className="mb-4">If you&rsquo;re unsatisfied with our response to your GDPR request, you have the right to lodge a complaint with:</p>
                <ul className="list-disc list-inside space-y-3 mb-6">
                  <li>Your local data protection authority</li>
                  <li>The Irish Data Protection Commission (our lead supervisory authority)</li>

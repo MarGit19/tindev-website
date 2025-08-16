@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { ExternalLink, Clock, CheckCircle, ArrowRight, Brain, Calendar, MessageSquare, TrendingUp, Zap } from 'lucide-react';
+import { Clock, CheckCircle, ArrowRight, Brain, Calendar, MessageSquare, TrendingUp, Zap } from 'lucide-react';
 
 const Products = () => {
   const products = [
