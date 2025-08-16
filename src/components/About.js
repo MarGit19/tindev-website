@@ -27,7 +27,7 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="py-24 relative overflow-hidden">
+    <section id="about" className="py-16 sm:py-24 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-100 via-white to-blue-50">
         {/* Subtle pattern overlay */}
@@ -41,16 +41,16 @@ const About = () => {
         </div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           
           {/* Content Side */}
-          <div className="space-y-8 animate-slideInLeft">
-            <h2 className="text-title text-charcoal-gray animate-section-title">
+          <div className="space-y-6 sm:space-y-8 animate-slideInLeft">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal-gray animate-section-title font-display leading-tight">
               Empowering Your Digital Life
             </h2>
             
-            <div className="space-y-6 text-body-large text-gray-600 leading-relaxed font-body animate-section-content">
+            <div className="space-y-4 sm:space-y-6 text-base sm:text-lg text-gray-600 leading-relaxed font-body animate-section-content">
               <p>
                 At <strong className="text-charcoal-gray font-semibold">TinDev Studios</strong>, we build practical, innovative software products designed to make life easier and more productive. As a tech company, we focus on creating <strong className="text-electric-blue font-semibold">useful, accessible tools</strong> that people can use directly on our website or through dedicated links—no complicated setups required.
               </p>
@@ -64,34 +64,34 @@ const About = () => {
               </p>
             </div>
 
-            {/* CTA Button */}
+            {/* Mobile-Optimized CTA Button */}
             <div className="animate-stagger-3">
               <button 
-                className="btn-accent btn-lg group"
+                className="w-full sm:w-auto btn-accent text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 group hover:scale-105 active:scale-95 transition-transform duration-200"
                 onClick={() => document.getElementById('products').scrollIntoView({ behavior: 'smooth' })}
               >
                 <span>Discover Our Products</span>
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
               </button>
             </div>
           </div>
 
           {/* Features Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 animate-slideInRight">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 animate-slideInRight">
             {features.map((feature, index) => (
               <div
                 key={feature.title}
-                className={`glass-card rounded-2xl p-6 luxury-hover bg-white/60 backdrop-blur-sm border border-white/40 animate-stagger-${index + 1}`}
+                className={`glass-card rounded-2xl p-4 sm:p-6 luxury-hover bg-white/60 backdrop-blur-sm border border-white/40 animate-stagger-${index + 1}`}
               >
-                <div className="w-14 h-14 bg-gradient-to-br from-electric-blue to-mint-green rounded-xl flex items-center justify-center text-white mb-4 shadow-lg">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-electric-blue to-mint-green rounded-xl flex items-center justify-center text-white mb-3 sm:mb-4 shadow-lg">
                   {feature.icon}
                 </div>
                 
-                <h3 className="font-display font-bold text-xl text-charcoal-gray mb-3">
+                <h3 className="font-display font-bold text-lg sm:text-xl text-charcoal-gray mb-2 sm:mb-3">
                   {feature.title}
                 </h3>
                 
-                <p className="text-gray-600 font-body leading-relaxed">
+                <p className="text-sm sm:text-base text-gray-600 font-body leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -100,14 +100,14 @@ const About = () => {
         </div>
 
         {/* Bottom Section - Value Proposition */}
-        <div className="mt-24 text-center animate-stagger-5">
-          <div className="glass-card rounded-3xl p-12 bg-gradient-to-r from-charcoal-gray to-gray-800 text-white">
-            <h3 className="text-3xl md:text-4xl font-display font-bold mb-6 gradient-text">
+        <div className="mt-16 sm:mt-24 text-center animate-stagger-5">
+          <div className="glass-card rounded-3xl p-8 sm:p-12 bg-gradient-to-r from-charcoal-gray to-gray-800 text-white">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold mb-4 sm:mb-6 gradient-text">
               Why Choose TinDev Studios?
             </h3>
             
-            <p className="text-xl text-white/80 max-w-4xl mx-auto font-body leading-relaxed">
-              We&rsquo;re not just building software&mdash;we&rsquo;re crafting solutions that integrate seamlessly into your daily workflow.
+            <p className="text-lg sm:text-xl text-white/80 max-w-4xl mx-auto font-body leading-relaxed">
+              We&rsquo;re not just building software&mdash;we&rsquo;re crafting solutions that integrate seamlessly into your daily workflow. 
               Every product is designed with one goal: to make your life more efficient, productive, and enjoyable. 
               <span className="text-mint-green font-semibold"> Experience the difference of tools built for real people, real needs.</span>
             </p>

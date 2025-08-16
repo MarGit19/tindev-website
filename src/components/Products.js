@@ -57,7 +57,7 @@ const Products = () => {
   ];
 
   return (
-    <section id="products" className="py-24 relative overflow-hidden">
+    <section id="products" className="py-16 sm:py-24 relative overflow-hidden">
       {/* Dark Premium Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-charcoal-gray via-gray-900 to-black">
         {/* Animated Orbs */}
@@ -77,29 +77,29 @@ const Products = () => {
         </div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
-        <div className="text-center mb-20 animate-section-title">
-          <h2 className="text-title text-white mb-6">
+        <div className="text-center mb-16 sm:mb-20 animate-section-title">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 font-display leading-tight">
             Powerful Tools for
             <br />
             <span className="gradient-text-vibrant">Modern Life</span>
           </h2>
           
-          <p className="text-subtitle text-white/70 max-w-4xl mx-auto font-body">
+          <p className="text-base sm:text-lg md:text-xl text-white/70 max-w-4xl mx-auto font-body">
             Discover our suite of practical software solutions designed to enhance productivity, 
             streamline workflows, and simplify your daily tasks.
           </p>
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
           {products.map((product, index) => (
             <div
               key={product.title}
               className={`group animate-stagger-${Math.min(index + 1, 5)}`}
             >
-              <div className="glass-card rounded-3xl p-8 luxury-hover h-full flex flex-col relative overflow-hidden animate-card-hover transition-all duration-300">
+              <div className="glass-card rounded-3xl p-6 sm:p-8 luxury-hover h-full flex flex-col relative overflow-hidden animate-card-hover transition-all duration-300">
                 {/* Gradient Border Animation */}
                 <div className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl p-[1px]">
                   <div className={`absolute inset-[1px] bg-gray-900/90 rounded-3xl bg-gradient-to-br ${product.gradient} opacity-10`}></div>
@@ -108,10 +108,10 @@ const Products = () => {
                 {/* Content */}
                 <div className="relative z-10 flex-1 flex flex-col">
                   {/* Header */}
-                  <div className="flex items-start justify-between mb-6">
+                  <div className="flex items-start justify-between mb-4 sm:mb-6">
                     {/* Icon & Category */}
                     <div>
-                      <div className={`w-16 h-16 bg-gradient-to-br ${product.gradient} rounded-2xl flex items-center justify-center text-white mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                      <div className={`w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br ${product.gradient} rounded-2xl flex items-center justify-center text-white mb-3 sm:mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                         {product.icon}
                       </div>
                       <span className="text-xs font-medium text-white/50 uppercase tracking-wider font-body">
@@ -123,15 +123,15 @@ const Products = () => {
                     <div className="flex items-center gap-2">
                       {product.status === 'completed' ? (
                         <>
-                          <CheckCircle className="w-5 h-5 text-mint-green" />
-                          <span className="bg-gradient-to-r from-mint-green to-electric-blue text-white px-3 py-1 rounded-full text-sm font-semibold">
+                          <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-mint-green" />
+                          <span className="bg-gradient-to-r from-mint-green to-electric-blue text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
                             Live
                           </span>
                         </>
                       ) : (
                         <>
-                          <Clock className="w-5 h-5 text-vivid-coral" />
-                          <span className="bg-gradient-to-r from-vivid-coral to-slate-blue text-white px-3 py-1 rounded-full text-sm font-semibold">
+                          <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-vivid-coral" />
+                          <span className="bg-gradient-to-r from-vivid-coral to-slate-blue text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
                             Soon
                           </span>
                         </>
@@ -140,27 +140,27 @@ const Products = () => {
                   </div>
 
                   {/* Product Info */}
-                  <h3 className="text-2xl font-display font-bold text-white mb-4 group-hover:text-mint-green transition-colors duration-300">
+                  <h3 className="text-xl sm:text-2xl font-display font-bold text-white mb-3 sm:mb-4 group-hover:text-mint-green transition-colors duration-300">
                     {product.title}
                   </h3>
                   
-                  <p className="text-white/70 mb-6 leading-relaxed font-body flex-1">
+                  <p className="text-sm sm:text-base text-white/70 mb-4 sm:mb-6 leading-relaxed font-body flex-1">
                     {product.description}
                   </p>
 
                   {/* Features */}
-                  <div className="space-y-3 mb-8">
+                  <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
                     {product.features.map((feature, i) => (
                       <div key={i} className="flex items-center gap-3">
                         <div className={`w-2 h-2 bg-gradient-to-r ${product.gradient} rounded-full`}></div>
-                        <span className="text-sm text-white/60 font-body">{feature}</span>
+                        <span className="text-xs sm:text-sm text-white/60 font-body">{feature}</span>
                       </div>
                     ))}
                   </div>
 
-                  {/* Action Button */}
+                  {/* Mobile-Optimized Action Button */}
                   <button 
-                    className={`btn-${product.status === 'completed' ? 'accent' : 'secondary'} w-full group transition-all duration-300 hover:scale-105 active:scale-95`}
+                    className={`btn-${product.status === 'completed' ? 'accent' : 'secondary'} w-full text-sm sm:text-base px-4 sm:px-6 py-3 sm:py-4 group transition-all duration-300 hover:scale-105 active:scale-95`}
                     onClick={() => {
                       if (product.status === 'completed' && product.link !== '#') {
                         window.open(product.link, '_blank');
@@ -168,7 +168,7 @@ const Products = () => {
                     }}
                   >
                     <span>{product.status === 'completed' ? 'Launch App' : 'Get Notified'}</span>
-                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
                   </button>
                 </div>
 
@@ -180,28 +180,28 @@ const Products = () => {
         </div>
 
         {/* Bottom CTA Section */}
-        <div className="mt-20 text-center animate-stagger-5">
-          <div className="glass-card rounded-3xl p-12 bg-gradient-to-r from-electric-blue/10 to-mint-green/10">
-            <h3 className="text-3xl md:text-4xl font-display font-bold mb-6 text-white">
+        <div className="mt-16 sm:mt-20 text-center animate-stagger-5">
+          <div className="glass-card rounded-3xl p-8 sm:p-12 bg-gradient-to-r from-electric-blue/10 to-mint-green/10">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold mb-4 sm:mb-6 text-white">
               Ready to Transform Your Workflow?
             </h3>
             
-            <p className="text-xl text-white/70 max-w-3xl mx-auto mb-8 font-body">
+            <p className="text-base sm:text-xl text-white/70 max-w-3xl mx-auto mb-6 sm:mb-8 font-body">
               Join thousands of users who have already discovered the power of our tools. 
               Start with our AI Resume Builder and experience the difference.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md sm:max-w-none mx-auto">
               <button 
-                className="btn-primary btn-lg hover:scale-105 active:scale-95 transition-transform duration-200"
+                className="w-full sm:w-auto btn-primary text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 hover:scale-105 active:scale-95 transition-transform duration-200"
                 onClick={() => window.open('https://resume.tindevstudios.com', '_blank')}
               >
                 <span>Start Building Your Resume</span>
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
               
               <button 
-                className="btn-secondary btn-lg hover:scale-105 active:scale-95 transition-transform duration-200"
+                className="w-full sm:w-auto btn-secondary text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 hover:scale-105 active:scale-95 transition-transform duration-200"
                 onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
               >
                 Contact Us
