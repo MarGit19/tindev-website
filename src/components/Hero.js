@@ -31,10 +31,11 @@ const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 text-center">
         {/* Floating Glass Card */}
-        <div className="glass-card rounded-3xl p-16 floating-glow animate-hero-entrance">
-          <h1 className="text-hero gradient-text-vibrant mb-8 animate-hero-title">
+        <div className="glass-card rounded-3xl p-6 sm:p-12 lg:p-16 floating-glow animate-hero-entrance">
+          {/* Mobile-Optimized Hero Title */}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight gradient-text-vibrant mb-6 sm:mb-8 animate-hero-title font-display">
             Practical Software
             <br />
             <span className="bg-gradient-to-r from-mint-green via-electric-blue to-slate-blue bg-clip-text text-transparent">
@@ -42,23 +43,24 @@ const Hero = () => {
             </span>
           </h1>
           
-          <p className="text-subtitle text-white/75 max-w-5xl mx-auto mb-12 font-body animate-hero-subtitle">
+          {/* Mobile-Optimized Subtitle */}
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/75 max-w-4xl mx-auto mb-8 sm:mb-12 font-body animate-hero-subtitle leading-relaxed px-2">
             We build <span className="text-mint-green font-semibold">efficient tools</span> and applications that help people accomplish tasks, 
             manage their lives, and provide <span className="text-electric-blue font-semibold">accessible solutions</span> online.
           </p>
           
-          {/* Premium CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-hero-buttons">
+          {/* Mobile-Optimized CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center animate-hero-buttons max-w-md sm:max-w-none mx-auto">
             <button
-              className="btn-primary btn-lg group hover:scale-105 active:scale-95 transition-transform duration-200"
+              className="w-full sm:w-auto btn-primary text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 group hover:scale-105 active:scale-95 transition-transform duration-200"
               onClick={() => document.getElementById('products').scrollIntoView({ behavior: 'smooth' })}
             >
               <span>Explore Products</span>
-              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
             </button>
             
             <button
-              className="btn-secondary btn-lg hover:scale-105 active:scale-95 transition-transform duration-200"
+              className="w-full sm:w-auto btn-secondary text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 hover:scale-105 active:scale-95 transition-transform duration-200"
               onClick={() => document.getElementById('about').scrollIntoView({ behavior: 'smooth' })}
             >
               Learn More
