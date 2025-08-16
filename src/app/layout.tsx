@@ -1,6 +1,7 @@
 import { Inter, Orbitron, Poppins } from 'next/font/google'
 import './globals.css'
 import { ReactNode } from 'react'
+import ScrollToTop from '@/components/ScrollToTop'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -35,6 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${orbitron.variable} ${poppins.variable} font-sans antialiased`}>
+        <ScrollToTop />
         {children}
       </body>
     </html>

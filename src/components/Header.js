@@ -128,13 +128,13 @@ const Header = () => {
           </motion.button>
         </div>
 
-        {/* Mobile Navigation - NO HOME LINK */}
+        {/* Mobile Navigation - FIXED SPACING */}
         {isMenuOpen && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden glass-card rounded-2xl mt-4 p-6 border border-white/10"
+            className="md:hidden glass-card rounded-2xl mt-4 mb-8 p-6 border border-white/10"
           >
             <ul className="space-y-4">
               {navLinks.map((link) => (
