@@ -1,18 +1,30 @@
 'use client';
 import React, { useState } from 'react';
-import { Mail, Send, CheckCircle, ArrowRight, Sparkles, HeadphonesIcon } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Mail, Phone, Send, CheckCircle } from 'lucide-react';
 import emailjs from '@emailjs/browser';
+import { SITE_CONFIG } from '@/lib/constants';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
+  const [activeTab, setActiveTab] = useState('consultation');
+  const [consultationForm, setConsultationForm] = useState({
     name: '',
     email: '',
     company: '',
-    inquiryType: 'general',
-    message: ''
+    projectType: '',
+    budget: '',
+    timeline: '',
+    message: '',
   });
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [trialForm, setTrialForm] = useState({
+    name: '',
+    email: '',
+    product: 'resume-builder',
+    company: '',
+    message: '',
+  });
+  const [submitted, setSubmitted] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   // EmailJS Configuration from environment variables
@@ -22,23 +34,47 @@ const Contact = () => {
     templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
   };
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-    setError('');
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
   };
 
-  const handleSubmit = async (e) => {
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  // Handle consultation form
+  const handleConsultationSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    setLoading(true);
     setError('');
+
+    // Validate form
+    if (!consultationForm.name || !consultationForm.email || !consultationForm.projectType || !consultationForm.message) {
+      setError('Please fill in all required fields');
+      setLoading(false);
+      return;
+    }
 
     // Check if environment variables are loaded
     if (!EMAILJS_CONFIG.publicKey || !EMAILJS_CONFIG.serviceId || !EMAILJS_CONFIG.templateId) {
       setError('Email service configuration is missing. Please check environment variables.');
-      setIsLoading(false);
+      setLoading(false);
       return;
     }
 
@@ -46,16 +82,22 @@ const Contact = () => {
       // Initialize EmailJS
       emailjs.init(EMAILJS_CONFIG.publicKey);
 
-      // Email template parameters
+      // Email template parameters - ALL FIELDS MUST BE INCLUDED
       const templateParams = {
-        from_name: formData.name,
-        from_email: formData.email,
-        company: formData.company || 'Not specified',
-        inquiry_type: formData.inquiryType,
-        message: formData.message,
-        reply_to: formData.email,
+        from_name: consultationForm.name,
+        from_email: consultationForm.email,
+        company: consultationForm.company || 'Not specified',
+        inquiry_type: 'consultation',
+        project_type: consultationForm.projectType || 'Not specified',
+        budget: consultationForm.budget || 'Not specified',
+        timeline: consultationForm.timeline || 'Not specified',
+        message: consultationForm.message,
+        product: 'N/A',
+        reply_to: consultationForm.email,
         timestamp: new Date().toLocaleString()
       };
+
+      console.log('Sending email with params:', templateParams);
 
       // Send email
       const result = await emailjs.send(
@@ -65,342 +107,582 @@ const Contact = () => {
       );
 
       console.log('Email sent successfully:', result);
-      
-      // Success state
-      setIsSubmitted(true);
-      setIsLoading(false);
-      
-      // Reset form
-      setFormData({ 
-        name: '', 
-        email: '', 
-        company: '', 
-        inquiryType: 'general', 
-        message: '' 
-      });
-      
-      // Hide success message after 5 seconds
-      setTimeout(() => setIsSubmitted(false), 5000);
 
-    } catch (error) {
-      console.error('Email send failed:', error);
-      setError('Failed to send message. Please try again or email us directly at support@tindevstudios.com');
-      setIsLoading(false);
+      // Success state
+      setSubmitted('consultation');
+      setConsultationForm({
+        name: '',
+        email: '',
+        company: '',
+        projectType: '',
+        budget: '',
+        timeline: '',
+        message: '',
+      });
+      setLoading(false);
+
+      // Hide success message after 5 seconds
+      setTimeout(() => setSubmitted(null), 5000);
+
+    } catch (err) {
+      console.error('Email send failed:', err);
+      setError('Failed to send message. Please try again or email us directly at ' + SITE_CONFIG.email);
+      setLoading(false);
     }
   };
 
-  const contactMethods = [
-    {
-      icon: <Mail className="w-6 h-6" />,
-      title: "Email Support",
-      description: "Get technical help and answers",
-      contact: "support@tindevstudios.com",
-      link: "mailto:support@tindevstudios.com",
-      gradient: "from-electric-blue to-mint-green"
-    },
-    {
-      icon: <HeadphonesIcon className="w-6 h-6" />,
-      title: "Enterprise Solutions",
-      description: "Custom integrations and priority support",
-      contact: "enterprise@tindevstudios.com",
-      link: "mailto:enterprise@tindevstudios.com",
-      gradient: "from-slate-blue to-vivid-coral"
+  // Handle trial form
+  const handleTrialSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    // Validate form
+    if (!trialForm.name || !trialForm.email) {
+      setError('Please fill in all required fields');
+      setLoading(false);
+      return;
     }
-  ];
 
-  const inquiryTypes = [
-    { value: 'general', label: 'General Inquiry' },
-    { value: 'product', label: 'Product Question' },
-    { value: 'enterprise', label: 'Enterprise Support' },
-    { value: 'partnership', label: 'Partnership Opportunity' },
-    { value: 'technical', label: 'Technical Support' }
-  ];
+    // Check if environment variables are loaded
+    if (!EMAILJS_CONFIG.publicKey || !EMAILJS_CONFIG.serviceId || !EMAILJS_CONFIG.templateId) {
+      setError('Email service configuration is missing. Please check environment variables.');
+      setLoading(false);
+      return;
+    }
 
-  const getSuccessMessage = () => {
-    switch (formData.inquiryType) {
-      case 'enterprise':
-        return {
-          title: "Enterprise Inquiry Received!",
-          message: "Thank you for your enterprise inquiry. Our business team will prioritize your request and contact you within 12 hours to discuss custom solutions, pricing, and implementation."
-        };
-      case 'partnership':
-        return {
-          title: "Partnership Inquiry Received!",
-          message: "We&rsquo;re excited about potential collaboration opportunities. Our partnerships team will review your proposal and get back to you within 24 hours."
-        };
-      case 'technical':
-        return {
-          title: "Technical Support Request Received!",
-          message: "Our technical support team has received your request. We&rsquo;ll investigate the issue and provide a solution within 24 hours."
-        };
-      default:
-        return {
-          title: "Message Sent Successfully!",
-          message: "Thank you for reaching out. Our team will review your message and get back to you soon."
-        };
+    try {
+      // Initialize EmailJS
+      emailjs.init(EMAILJS_CONFIG.publicKey);
+
+      // Email template parameters - ALL FIELDS MUST BE INCLUDED
+      const templateParams = {
+        from_name: trialForm.name,
+        from_email: trialForm.email,
+        company: trialForm.company || 'Not specified',
+        inquiry_type: 'trial',
+        project_type: 'N/A',
+        budget: 'N/A',
+        timeline: 'N/A',
+        message: trialForm.message || 'No additional info provided',
+        product: trialForm.product || 'resume-builder',
+        reply_to: trialForm.email,
+        timestamp: new Date().toLocaleString()
+      };
+
+      console.log('Sending email with params:', templateParams);
+
+      // Send email
+      const result = await emailjs.send(
+        EMAILJS_CONFIG.serviceId,
+        EMAILJS_CONFIG.templateId,
+        templateParams
+      );
+
+      console.log('Email sent successfully:', result);
+
+      // Success state
+      setSubmitted('trial');
+      setTrialForm({
+        name: '',
+        email: '',
+        product: 'resume-builder',
+        company: '',
+        message: '',
+      });
+      setLoading(false);
+
+      // Hide success message after 5 seconds
+      setTimeout(() => setSubmitted(null), 5000);
+
+    } catch (err) {
+      console.error('Email send failed:', err);
+      setError('Failed to send message. Please try again or email us directly at ' + SITE_CONFIG.email);
+      setLoading(false);
     }
   };
 
   return (
-    <section id="contact" className="py-16 sm:py-24 relative overflow-hidden">
-      {/* Premium Dark Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-charcoal-gray via-black to-gray-900">
-        {/* Animated Background Elements */}
-        <div className="absolute top-20 left-20 w-96 h-96 bg-electric-blue/8 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-mint-green/8 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-vivid-coral/8 rounded-full blur-3xl animate-pulse delay-2000 transform -translate-x-1/2 -translate-y-1/2"></div>
+    <section id="contact" className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
+      {/* Background */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
+        <motion.div
+          animate={{
+            opacity: [0.02, 0.06, 0.02],
+          }}
+          transition={{ duration: 15, repeat: Infinity }}
+          className="absolute -top-40 left-1/4 w-96 h-96 bg-electric-blue/10 rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{
+            opacity: [0.02, 0.06, 0.02],
+          }}
+          transition={{ duration: 18, repeat: Infinity, delay: 0.5 }}
+          className="absolute -bottom-40 right-1/4 w-96 h-96 bg-mint-green/10 rounded-full blur-3xl"
+        />
       </div>
 
+      {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
-        <div className="text-center mb-12 sm:mb-16 animate-section-title">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-vivid-coral/20 to-mint-green/20 border border-vivid-coral/30 rounded-full px-4 sm:px-6 py-2 sm:py-3 mb-6 sm:mb-8 animate-scaleIn">
-            <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-vivid-coral" />
-            <span className="text-white/90 font-medium font-body text-sm sm:text-base">Get In Touch</span>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: "-100px" }}
+          className="text-center mb-16 sm:mb-20"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 glass-card rounded-full border border-white/20 mb-6">
+            <div className="w-2 h-2 bg-mint-green rounded-full animate-pulse" />
+            <span className="text-white/80 text-xs sm:text-sm font-medium font-body">
+              Get In Touch
+            </span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 font-display leading-tight">
-            Ready to Transform
-            <br />
-            <span className="gradient-text-vibrant">Your Workflow?</span>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight gradient-text mb-6 font-display">
+            Let's Work Together
           </h2>
-          
-          <p className="text-base sm:text-lg md:text-xl text-white/70 max-w-4xl mx-auto font-body">
-            Connect with our team to learn how our tools can streamline your processes, 
-            boost productivity, and help you achieve your goals faster.
-          </p>
-        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-start">
-          
-          {/* Support Options & Info */}
-          <div className="space-y-6 sm:space-y-8 animate-slideInLeft">
-            {/* Contact Methods Grid */}
-            <div className="space-y-4 sm:space-y-6">
-              {contactMethods.map((method, index) => (
-                <a
-                  key={method.title}
-                  href={method.link}
-                  className={`glass-card rounded-2xl p-4 sm:p-6 luxury-hover group block animate-stagger-${index + 1} transition-all duration-300 hover:scale-105`}
+          <p className="text-base sm:text-lg text-white/75 max-w-3xl mx-auto leading-relaxed font-body">
+            Have a project in mind? Want to try one of our SaaS products? Get in touch with our team.
+          </p>
+        </motion.div>
+
+        {/* Main Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-12">
+          {/* Left - Contact Info */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
+            {/* Direct Contact */}
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold text-white font-display">
+                Contact Info
+              </h3>
+
+              <div className="space-y-4">
+                {/* Email */}
+                <motion.a
+                  href={`mailto:${SITE_CONFIG.email}`}
+                  className="flex items-start gap-4 group"
+                  whileHover={{ x: 5 }}
                 >
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <div className={`w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br ${method.gradient} rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                      {method.icon}
+                  <div className="w-12 h-12 rounded-lg bg-mint-green/20 border border-mint-green/50 flex items-center justify-center flex-shrink-0 group-hover:bg-mint-green/30 transition-all">
+                    <Mail className="w-6 h-6 text-mint-green" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-white/60 text-xs font-semibold uppercase tracking-wide font-body">Email</p>
+                    <p className="text-white text-sm sm:text-base font-body break-all hover:text-mint-green transition-colors">
+                      {SITE_CONFIG.email}
+                    </p>
+                  </div>
+                </motion.a>
+
+                {/* Enterprise Email */}
+                {SITE_CONFIG.enterpriseEmail && (
+                  <motion.a
+                    href={`mailto:${SITE_CONFIG.enterpriseEmail}`}
+                    className="flex items-start gap-4 group"
+                    whileHover={{ x: 5 }}
+                  >
+                    <div className="w-12 h-12 rounded-lg bg-electric-blue/20 border border-electric-blue/50 flex items-center justify-center flex-shrink-0 group-hover:bg-electric-blue/30 transition-all">
+                      <Mail className="w-6 h-6 text-electric-blue" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-display font-bold text-lg sm:text-xl text-white mb-1 sm:mb-2 group-hover:text-mint-green transition-colors">
-                        {method.title}
-                      </h3>
-                      <p className="text-sm sm:text-base text-white/60 font-body mb-1 sm:mb-2">
-                        {method.description}
+                      <p className="text-white/60 text-xs font-semibold uppercase tracking-wide font-body">Enterprise</p>
+                      <p className="text-white text-sm sm:text-base font-body break-all hover:text-electric-blue transition-colors">
+                        {SITE_CONFIG.enterpriseEmail}
                       </p>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm sm:text-base text-mint-green font-semibold font-body">
-                          {method.contact}
-                        </span>
-                        <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 text-mint-green opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1" />
-                      </div>
                     </div>
-                  </div>
-                </a>
-              ))}
+                  </motion.a>
+                )}
+
+                {/* Phone */}
+                {SITE_CONFIG.phone && SITE_CONFIG.phone !== '+1 (XXX) XXX-XXXX' && (
+                  <motion.a
+                    href={`tel:${SITE_CONFIG.phone}`}
+                    className="flex items-start gap-4 group"
+                    whileHover={{ x: 5 }}
+                  >
+                    <div className="w-12 h-12 rounded-lg bg-slate-blue/20 border border-slate-blue/50 flex items-center justify-center flex-shrink-0 group-hover:bg-slate-blue/30 transition-all">
+                      <Phone className="w-6 h-6 text-slate-blue" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-white/60 text-xs font-semibold uppercase tracking-wide font-body">Phone</p>
+                      <p className="text-white text-sm sm:text-base font-body hover:text-slate-blue transition-colors">
+                        {SITE_CONFIG.phone}
+                      </p>
+                    </div>
+                  </motion.a>
+                )}
+              </div>
             </div>
 
-            {/* Company Info Card */}
-            <div className="glass-card rounded-2xl p-6 sm:p-8 bg-gradient-to-br from-electric-blue/10 to-mint-green/10 animate-stagger-3">
-              <h3 className="font-display font-bold text-xl sm:text-2xl text-white mb-4 sm:mb-6">
-                Why Choose TinDev Studios?
-              </h3>
-              <ul className="space-y-3 sm:space-y-4 text-sm sm:text-base text-white/70 font-body">
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-mint-green rounded-full mt-2 flex-shrink-0"></div>
-                  <span>Instant access to all tools - no downloads or installations required</span>
+            {/* Business Hours / Info */}
+            <div className="glass-card rounded-2xl p-6 border border-white/10 space-y-4">
+              <h4 className="font-display font-bold text-white">Quick Facts</h4>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-2 text-white/70 text-sm font-body">
+                  <span className="w-1.5 h-1.5 rounded-full bg-mint-green mt-2 flex-shrink-0" />
+                  Response time: Within 24 hours
                 </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-electric-blue rounded-full mt-2 flex-shrink-0"></div>
-                  <span>Enterprise-grade security with 99.9% uptime reliability</span>
+                <li className="flex items-start gap-2 text-white/70 text-sm font-body">
+                  <span className="w-1.5 h-1.5 rounded-full bg-electric-blue mt-2 flex-shrink-0" />
+                  Available for projects worldwide
                 </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-vivid-coral rounded-full mt-2 flex-shrink-0"></div>
-                  <span>Dedicated customer support and continuous product updates</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-slate-blue rounded-full mt-2 flex-shrink-0"></div>
-                  <span>Built by developers who understand real-world business needs</span>
+                <li className="flex items-start gap-2 text-white/70 text-sm font-body">
+                  <span className="w-1.5 h-1.5 rounded-full bg-slate-blue mt-2 flex-shrink-0" />
+                  Flexible engagement models
                 </li>
               </ul>
-
-              <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-white/10">
-                <button 
-                  className="w-full btn-secondary text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 group transition-all duration-300 hover:scale-105"
-                  onClick={() => document.getElementById('products').scrollIntoView({ behavior: 'smooth' })}
-                >
-                  <span>Explore Our Products</span>
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
-                </button>
-              </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Contact Form */}
-          <div className="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden animate-slideInRight">
-            {/* Form Header */}
-            <div className="mb-6 sm:mb-8 text-center">
-              <h3 className="font-display font-bold text-xl sm:text-2xl text-white mb-2">
-                Start the Conversation
-              </h3>
-              <p className="text-sm sm:text-base text-white/60 font-body">
-                Tell us about your needs and we&rsquo;ll get back to you within 24 hours
-              </p>
+          {/* Right - Forms */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="lg:col-span-2"
+          >
+            {/* Tabs */}
+            <div className="flex gap-4 mb-8 border-b border-white/10">
+              <button
+                onClick={() => {
+                  setActiveTab('consultation');
+                  setError('');
+                }}
+                className={`px-4 py-3 font-semibold text-sm font-body transition-all border-b-2 ${
+                  activeTab === 'consultation'
+                    ? 'text-mint-green border-mint-green'
+                    : 'text-white/60 border-transparent hover:text-white/80'
+                }`}
+              >
+                Custom Project
+              </button>
+              <button
+                onClick={() => {
+                  setActiveTab('trial');
+                  setError('');
+                }}
+                className={`px-4 py-3 font-semibold text-sm font-body transition-all border-b-2 ${
+                  activeTab === 'trial'
+                    ? 'text-electric-blue border-electric-blue'
+                    : 'text-white/60 border-transparent hover:text-white/80'
+                }`}
+              >
+                Try SaaS Product
+              </button>
             </div>
-            
-            {isSubmitted ? (
-              <div className="text-center py-8 sm:py-12 animate-scaleIn">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-mint-green to-electric-blue rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                  <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
-                </div>
-                <h4 className="text-xl sm:text-2xl font-display font-bold text-mint-green mb-3 sm:mb-4">
-                  {getSuccessMessage().title}
-                </h4>
-                <p className="text-sm sm:text-base text-white/70 font-body leading-relaxed">
-                  {getSuccessMessage().message}
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+
+            {/* Consultation Form */}
+            {activeTab === 'consultation' && (
+              <motion.form
+                onSubmit={handleConsultationSubmit}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-5"
+              >
                 {/* Error Message */}
                 {error && (
-                  <div className="bg-vivid-coral/20 border border-vivid-coral/30 rounded-xl p-3 sm:p-4 animate-fadeIn">
+                  <div className="bg-vivid-coral/20 border border-vivid-coral/30 rounded-lg p-3 sm:p-4">
                     <p className="text-vivid-coral font-body text-sm sm:text-base">{error}</p>
                   </div>
                 )}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-white/80 mb-2 sm:mb-3 font-body">
-                      Full Name *
-                    </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  {/* Name */}
+                  <div className="space-y-2">
+                    <label className="text-white text-sm font-semibold font-body">Name *</label>
                     <input
                       type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
+                      value={consultationForm.name}
+                      onChange={(e) => {
+                        setConsultationForm({ ...consultationForm, name: e.target.value });
+                        setError('');
+                      }}
                       required
-                      className="w-full px-3 sm:px-4 py-3 sm:py-4 rounded-xl glass-card text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-mint-green/50 focus:border-mint-green/50 transition-all duration-300 font-body text-sm sm:text-base"
-                      placeholder="Your full name"
+                      className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-mint-green/50 focus:border-mint-green/50 transition-all font-body text-sm"
+                      placeholder="Your name"
                     />
                   </div>
 
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-white/80 mb-2 sm:mb-3 font-body">
-                      Email Address *
-                    </label>
+                  {/* Email */}
+                  <div className="space-y-2">
+                    <label className="text-white text-sm font-semibold font-body">Email *</label>
                     <input
                       type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
+                      value={consultationForm.email}
+                      onChange={(e) => {
+                        setConsultationForm({ ...consultationForm, email: e.target.value });
+                        setError('');
+                      }}
                       required
-                      className="w-full px-3 sm:px-4 py-3 sm:py-4 rounded-xl glass-card text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-mint-green/50 focus:border-mint-green/50 transition-all duration-300 font-body text-sm sm:text-base"
+                      className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-mint-green/50 focus:border-mint-green/50 transition-all font-body text-sm"
                       placeholder="your@email.com"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label htmlFor="company" className="block text-sm font-medium text-white/80 mb-2 sm:mb-3 font-body">
-                    Company {formData.inquiryType === 'enterprise' ? '*' : '(Optional)'}
-                  </label>
-                  <input
-                    type="text"
-                    id="company"
-                    name="company"
-                    value={formData.company}
-                    onChange={handleChange}
-                    required={formData.inquiryType === 'enterprise'}
-                    className="w-full px-3 sm:px-4 py-3 sm:py-4 rounded-xl glass-card text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-mint-green/50 focus:border-mint-green/50 transition-all duration-300 font-body text-sm sm:text-base"
-                    placeholder="Your company name"
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  {/* Company */}
+                  <div className="space-y-2">
+                    <label className="text-white text-sm font-semibold font-body">Company</label>
+                    <input
+                      type="text"
+                      value={consultationForm.company}
+                      onChange={(e) => setConsultationForm({ ...consultationForm, company: e.target.value })}
+                      className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-mint-green/50 focus:border-mint-green/50 transition-all font-body text-sm"
+                      placeholder="Your company"
+                    />
+                  </div>
+
+                  {/* Project Type */}
+                  <div className="space-y-2">
+                    <label className="text-white text-sm font-semibold font-body">Project Type *</label>
+                    <select
+                      value={consultationForm.projectType}
+                      onChange={(e) => {
+                        setConsultationForm({ ...consultationForm, projectType: e.target.value });
+                        setError('');
+                      }}
+                      required
+                      className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-mint-green/50 focus:border-mint-green/50 transition-all font-body text-sm"
+                    >
+                      <option value="" className="bg-gray-900">Select project type...</option>
+                      <option value="web-app" className="bg-gray-900">Web Application</option>
+                      <option value="mobile-app" className="bg-gray-900">Mobile App</option>
+                      <option value="api" className="bg-gray-900">API & Backend</option>
+                      <option value="saas" className="bg-gray-900">SaaS Platform</option>
+                      <option value="integration" className="bg-gray-900">Third-party Integration</option>
+                      <option value="consulting" className="bg-gray-900">Consulting</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  {/* Budget */}
+                  <div className="space-y-2">
+                    <label className="text-white text-sm font-semibold font-body">Budget Range</label>
+                    <select
+                      value={consultationForm.budget}
+                      onChange={(e) => setConsultationForm({ ...consultationForm, budget: e.target.value })}
+                      className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-mint-green/50 focus:border-mint-green/50 transition-all font-body text-sm"
+                    >
+                      <option value="" className="bg-gray-900">Select budget...</option>
+                      <option value="under-10k" className="bg-gray-900">Under $10k</option>
+                      <option value="10k-50k" className="bg-gray-900">$10k - $50k</option>
+                      <option value="50k-100k" className="bg-gray-900">$50k - $100k</option>
+                      <option value="100k-250k" className="bg-gray-900">$100k - $250k</option>
+                      <option value="250k+" className="bg-gray-900">$250k+</option>
+                    </select>
+                  </div>
+
+                  {/* Timeline */}
+                  <div className="space-y-2">
+                    <label className="text-white text-sm font-semibold font-body">Timeline</label>
+                    <select
+                      value={consultationForm.timeline}
+                      onChange={(e) => setConsultationForm({ ...consultationForm, timeline: e.target.value })}
+                      className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-mint-green/50 focus:border-mint-green/50 transition-all font-body text-sm"
+                    >
+                      <option value="" className="bg-gray-900">Select timeline...</option>
+                      <option value="asap" className="bg-gray-900">ASAP (1-2 months)</option>
+                      <option value="3-months" className="bg-gray-900">3 months</option>
+                      <option value="6-months" className="bg-gray-900">6 months</option>
+                      <option value="flexible" className="bg-gray-900">Flexible</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Message */}
+                <div className="space-y-2">
+                  <label className="text-white text-sm font-semibold font-body">Tell us about your project *</label>
+                  <textarea
+                    value={consultationForm.message}
+                    onChange={(e) => {
+                      setConsultationForm({ ...consultationForm, message: e.target.value });
+                      setError('');
+                    }}
+                    required
+                    rows="5"
+                    className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-mint-green/50 focus:border-mint-green/50 transition-all font-body text-sm resize-none"
+                    placeholder="Describe your project, goals, and any specific requirements..."
                   />
                 </div>
 
-                <div>
-                  <label htmlFor="inquiryType" className="block text-sm font-medium text-white/80 mb-2 sm:mb-3 font-body">
-                    Inquiry Type *
-                  </label>
-                  <select
-                    id="inquiryType"
-                    name="inquiryType"
-                    value={formData.inquiryType}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-3 sm:px-4 py-3 sm:py-4 rounded-xl glass-card text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-mint-green/50 focus:border-mint-green/50 transition-all duration-300 font-body cursor-pointer text-sm sm:text-base"
-                  >
-                    {inquiryTypes.map((type) => (
-                      <option key={type.value} value={type.value} className="bg-charcoal-gray text-white">
-                        {type.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-white/80 mb-2 sm:mb-3 font-body">
-                    Message *
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows="5"
-                    className="w-full px-3 sm:px-4 py-3 sm:py-4 rounded-xl glass-card text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-mint-green/50 focus:border-mint-green/50 transition-all duration-300 resize-none font-body text-sm sm:text-base"
-                    placeholder={
-                      formData.inquiryType === 'enterprise' 
-                        ? "Tell us about your organization's needs, team size, and specific requirements..."
-                        : formData.inquiryType === 'partnership'
-                        ? "Describe your partnership proposal and how we can collaborate..."
-                        : "Tell us about your project, goals, or how we can help you..."
-                    }
-                  ></textarea>
-                </div>
-
-                {/* Mobile-Optimized Submit Button */}
-                <button
+                {/* Submit */}
+                <motion.button
                   type="submit"
-                  disabled={isLoading}
-                  className="btn-accent w-full text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 group disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 active:scale-95"
+                  disabled={loading}
+                  className="w-full btn-primary text-base font-semibold py-4 flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  {isLoading ? (
+                  {loading ? (
                     <>
-                      <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                       <span>Sending...</span>
                     </>
                   ) : (
                     <>
-                      <Send className="w-4 h-4 sm:w-5 sm:h-5" />
-                      <span>
-                        {formData.inquiryType === 'enterprise' ? 'Request Enterprise Demo' : 'Send Message'}
-                      </span>
+                      <Send className="w-5 h-5" />
+                      <span>Send Consultation Request</span>
                     </>
                   )}
-                </button>
+                </motion.button>
 
-                <p className="text-center text-white/50 text-xs sm:text-sm font-body">
-                  {formData.inquiryType === 'enterprise' 
-                    ? 'Enterprise inquiries receive priority handling and dedicated account management.'
-                    : 'We respect your privacy and will never share your information.'
-                  }
-                </p>
-              </form>
+                {submitted === 'consultation' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-4 bg-mint-green/20 border border-mint-green/50 rounded-lg flex items-center gap-3"
+                  >
+                    <CheckCircle className="w-5 h-5 text-mint-green flex-shrink-0" />
+                    <p className="text-mint-green text-sm font-body">
+                      Thank you! We'll be in touch within 24 hours.
+                    </p>
+                  </motion.div>
+                )}
+              </motion.form>
             )}
 
-            {/* Decorative Elements */}
-            <div className="absolute top-4 right-4 w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-mint-green/10 to-electric-blue/10 rounded-full blur-xl"></div>
-            <div className="absolute bottom-4 left-4 w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-vivid-coral/10 to-slate-blue/10 rounded-full blur-xl"></div>
-          </div>
+            {/* Trial Form */}
+            {activeTab === 'trial' && (
+              <motion.form
+                onSubmit={handleTrialSubmit}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-5"
+              >
+                {/* Error Message */}
+                {error && (
+                  <div className="bg-vivid-coral/20 border border-vivid-coral/30 rounded-lg p-3 sm:p-4">
+                    <p className="text-vivid-coral font-body text-sm sm:text-base">{error}</p>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  {/* Name */}
+                  <div className="space-y-2">
+                    <label className="text-white text-sm font-semibold font-body">Name *</label>
+                    <input
+                      type="text"
+                      value={trialForm.name}
+                      onChange={(e) => {
+                        setTrialForm({ ...trialForm, name: e.target.value });
+                        setError('');
+                      }}
+                      required
+                      className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-electric-blue/50 focus:border-electric-blue/50 transition-all font-body text-sm"
+                      placeholder="Your name"
+                    />
+                  </div>
+
+                  {/* Email */}
+                  <div className="space-y-2">
+                    <label className="text-white text-sm font-semibold font-body">Email *</label>
+                    <input
+                      type="email"
+                      value={trialForm.email}
+                      onChange={(e) => {
+                        setTrialForm({ ...trialForm, email: e.target.value });
+                        setError('');
+                      }}
+                      required
+                      className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-electric-blue/50 focus:border-electric-blue/50 transition-all font-body text-sm"
+                      placeholder="your@email.com"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  {/* Product */}
+                  <div className="space-y-2">
+                    <label className="text-white text-sm font-semibold font-body">Product *</label>
+                    <select
+                      value={trialForm.product}
+                      onChange={(e) => {
+                        setTrialForm({ ...trialForm, product: e.target.value });
+                        setError('');
+                      }}
+                      className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-electric-blue/50 focus:border-electric-blue/50 transition-all font-body text-sm"
+                    >
+                      <option value="resume-builder" className="bg-gray-900">AI Resume Builder</option>
+                    </select>
+                  </div>
+
+                  {/* Company */}
+                  <div className="space-y-2">
+                    <label className="text-white text-sm font-semibold font-body">Company</label>
+                    <input
+                      type="text"
+                      value={trialForm.company}
+                      onChange={(e) => setTrialForm({ ...trialForm, company: e.target.value })}
+                      className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-electric-blue/50 focus:border-electric-blue/50 transition-all font-body text-sm"
+                      placeholder="Your company"
+                    />
+                  </div>
+                </div>
+
+                {/* Message */}
+                <div className="space-y-2">
+                  <label className="text-white text-sm font-semibold font-body">Additional Info</label>
+                  <textarea
+                    value={trialForm.message}
+                    onChange={(e) => setTrialForm({ ...trialForm, message: e.target.value })}
+                    rows="5"
+                    className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-electric-blue/50 focus:border-electric-blue/50 transition-all font-body text-sm resize-none"
+                    placeholder="Tell us how you plan to use this product..."
+                  />
+                </div>
+
+                {/* Submit */}
+                <motion.button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full btn-primary text-base font-semibold py-4 flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {loading ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      <span>Sending...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      <span>Start Free Trial</span>
+                    </>
+                  )}
+                </motion.button>
+
+                {submitted === 'trial' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-4 bg-electric-blue/20 border border-electric-blue/50 rounded-lg flex items-center gap-3"
+                  >
+                    <CheckCircle className="w-5 h-5 text-electric-blue flex-shrink-0" />
+                    <p className="text-electric-blue text-sm font-body">
+                      Great! Check your email for trial access details.
+                    </p>
+                  </motion.div>
+                )}
+              </motion.form>
+            )}
+          </motion.div>
         </div>
       </div>
     </section>

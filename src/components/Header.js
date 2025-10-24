@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Logo from './Logo';
 import { motion } from 'framer-motion';
+import { X } from 'lucide-react';
+import { SITE_CONFIG } from '@/lib/constants';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,6 +12,7 @@ const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
 
+  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -18,33 +21,24 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // REMOVED HOME LINK - Only About, Products, Contact
-  const navLinks = [
-    { href: '#about', label: 'About' },
-    { href: '#products', label: 'Products' },
-    { href: '#contact', label: 'Contact' },
-  ];
+  // Close menu on route change
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
 
+  // Handle navigation click
   const handleNavClick = (href) => {
     setIsMenuOpen(false);
     
-    // If we're on a legal page, go to home first then scroll
-    if (pathname !== '/') {
-      if (href.startsWith('#')) {
-        router.push(`/${href}`);
-      } else {
-        router.push(href);
+    // If on home page and href starts with #, scroll to section
+    if (pathname === '/' && href.startsWith('#')) {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
       }
     } else {
-      // We're on home page, just scroll to section
-      if (href.startsWith('#')) {
-        const element = document.querySelector(href);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      } else {
-        router.push(href);
-      }
+      // Navigate to page
+      router.push(href);
     }
   };
 
@@ -54,13 +48,18 @@ const Header = () => {
     router.push('/');
   };
 
-  const getLabelFromHref = (href) => {
-    switch(href) {
-      case '#about': return 'About';
-      case '#products': return 'Products';
-      case '#contact': return 'Contact';
-      default: return '';
-    }
+  // Navigation items - SIMPLIFIED (NO DROPDOWNS)
+  const navItems = [
+    { label: 'Home', href: '/' },
+    { label: 'About', href: '/about' },
+    { label: 'Services', href: '/services' },
+    { label: 'Products', href: '/products' },
+    { label: 'Contact', href: '/#contact' },
+  ];
+
+  const isActive = (href) => {
+    if (href === '/') return pathname === '/';
+    return pathname.startsWith(href);
   };
 
   return (
@@ -70,90 +69,123 @@ const Header = () => {
       transition={{ duration: 0.8, ease: "easeOut" }}
       className={`fixed w-full top-0 z-50 transition-all duration-500 ${
         isScrolled 
-          ? 'glass-card border-b border-white/10' 
+          ? 'glass-card border-b border-white/10 backdrop-blur-xl' 
           : 'bg-transparent'
       }`}
     >
-      <nav className="max-w-7xl mx-auto px-6">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo - Clickable to go home */}
-          <div
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="flex justify-between items-center h-16 sm:h-20">
+          
+          {/* ===== LOGO ===== */}
+          <motion.div
             onClick={handleLogoClick}
-            className="cursor-pointer hover:scale-105 transition-transform duration-200"
+            className="cursor-pointer hover:scale-105 transition-transform duration-200 flex-shrink-0"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <Logo size={44} showText={true} textColor="text-white" />
-          </div>
+            <Logo size={40} showText={true} textColor="text-white" />
+          </motion.div>
 
-          {/* Desktop Navigation - NO HOME LINK */}
-          <ul className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link, index) => (
+          {/* ===== DESKTOP NAVIGATION ===== */}
+          <ul className="hidden lg:flex items-center space-x-1">
+            {navItems.map((link, index) => (
               <motion.li 
                 key={link.href}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                transition={{ duration: 0.6, delay: index * 0.08 }}
+                className="relative group"
               >
                 <button
                   onClick={() => handleNavClick(link.href)}
-                  className="relative text-white/90 hover:text-mint-green transition-all duration-300 font-medium text-lg group"
+                  className={`relative px-4 py-2 rounded-lg transition-all duration-300 font-medium text-sm font-body group ${
+                    isActive(link.href)
+                      ? 'text-mint-green'
+                      : 'text-white/90 hover:text-mint-green'
+                  }`}
                 >
-                  {getLabelFromHref(link.href)}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-mint-green to-electric-blue transition-all duration-300 group-hover:w-full"></span>
+                  {link.label}
+                  
+                  {/* Active indicator */}
+                  {isActive(link.href) && (
+                    <span className="absolute -bottom-1 left-4 right-4 h-0.5 bg-gradient-to-r from-mint-green to-electric-blue"></span>
+                  )}
+                  
+                  {/* Hover indicator */}
+                  <span className="absolute -bottom-1 left-4 right-4 h-0.5 bg-gradient-to-r from-mint-green to-electric-blue scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                 </button>
               </motion.li>
             ))}
           </ul>
 
-          {/* Premium Contact Button */}
-          <motion.button
-            onClick={() => handleNavClick('#contact')}
-            className="hidden md:block btn-primary font-semibold transition-all duration-300 hover:scale-105"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Get Started
-          </motion.button>
+          {/* ===== RIGHT SIDE (CTA + MOBILE MENU) ===== */}
+          <div className="flex items-center gap-2 sm:gap-4">
 
-          {/* Mobile Menu Button */}
-          <motion.button
-            className="md:hidden glass-card text-white p-3 rounded-full"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            whileTap={{ scale: 0.95 }}
-          >
-            <div className="w-6 h-6 flex flex-col justify-center items-center space-y-1">
-              <span className={`block w-5 h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
-              <span className={`block w-5 h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`}></span>
-              <span className={`block w-5 h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
-            </div>
-          </motion.button>
+            {/* Desktop CTA Button */}
+            <motion.button
+              onClick={() => handleNavClick('/#contact')}
+              className="hidden lg:block btn-primary text-sm font-semibold transition-all duration-300 hover:scale-105 px-6 py-2.5"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Get Started
+            </motion.button>
+
+            {/* Mobile Menu Button */}
+            <motion.button
+              className="lg:hidden glass-card text-white p-2.5 rounded-lg"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              whileTap={{ scale: 0.95 }}
+              aria-label="Toggle menu"
+            >
+              <div className="w-6 h-5 flex flex-col justify-center items-center space-y-1">
+                <span className={`block w-5 h-0.5 bg-white transition-all duration-300 origin-center ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+                <span className={`block w-5 h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`}></span>
+                <span className={`block w-5 h-0.5 bg-white transition-all duration-300 origin-center ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+              </div>
+            </motion.button>
+          </div>
         </div>
 
-        {/* Mobile Navigation - FIXED SPACING */}
+        {/* ===== MOBILE NAVIGATION ===== */}
         {isMenuOpen && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden glass-card rounded-2xl mt-4 mb-8 p-6 border border-white/10"
+            className="lg:hidden glass-card rounded-2xl mt-3 mb-4 p-4 sm:p-6 border border-white/10"
           >
-            <ul className="space-y-4">
-              {navLinks.map((link) => (
-                <li key={link.href}>
+            <ul className="space-y-2">
+              {navItems.map((link, index) => (
+                <motion.li 
+                  key={link.href}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                >
                   <button
                     onClick={() => handleNavClick(link.href)}
-                    className="block w-full text-left text-white/90 hover:text-mint-green transition-colors duration-300 font-medium text-lg py-2"
+                    className={`w-full text-left px-4 py-2.5 rounded-lg transition-all duration-200 font-body font-medium ${
+                      isActive(link.href)
+                        ? 'text-mint-green bg-white/10'
+                        : 'text-white/90 hover:text-mint-green hover:bg-white/5'
+                    }`}
                   >
-                    {getLabelFromHref(link.href)}
+                    {link.label}
                   </button>
-                </li>
+                </motion.li>
               ))}
-              <li className="pt-4">
-                <button
-                  onClick={() => handleNavClick('#contact')}
-                  className="block w-full btn-primary text-center font-semibold"
+
+              {/* Mobile CTA Button */}
+              <li className="pt-2 border-t border-white/10">
+                <motion.button
+                  onClick={() => handleNavClick('/#contact')}
+                  className="w-full btn-primary text-sm font-semibold py-3 mt-4"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   Get Started
-                </button>
+                </motion.button>
               </li>
             </ul>
           </motion.div>
