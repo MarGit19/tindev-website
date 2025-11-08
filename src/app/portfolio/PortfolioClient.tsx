@@ -3,16 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import Nav from "@/components/nav";
-import Footer from "@/components/footer";
 import { Container, Section } from "@/components/ui";
 import upplyitHome from "@/components/assets/upplyithome.png";
 
 export default function PortfolioClient() {
   return (
     <>
-      <Nav />
-
       {/* Header with Starfield Background */}
       <section className="relative isolate overflow-hidden pt-20 sm:pt-24 md:pt-28 pb-12 sm:pb-16">
         {/* Starfield Background - Same as Hero */}
@@ -260,8 +256,6 @@ export default function PortfolioClient() {
           </div>
         </Container>
       </Section>
-
-      <Footer />
     </>
   );
 }

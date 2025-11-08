@@ -3,15 +3,11 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-import Nav from "@/components/nav";
-import Footer from "@/components/footer";
 import { Container, Section } from "@/components/ui";
 
 export default function PricingClient() {
   return (
     <>
-      <Nav />
-
       {/* Header with Starfield Background */}
       <section 
         aria-label="Pricing Header"
@@ -275,8 +271,6 @@ export default function PricingClient() {
           </div>
         </Container>
       </Section>
-
-      <Footer />
     </>
   );
 }
