@@ -150,16 +150,16 @@ export default function ProductsPreview() {
               <div className="text-xs uppercase tracking-wide text-white/60">Coming Soon</div>
               <h3 className="mt-1 text-base sm:text-lg text-white font-display">More Products on the Way</h3>
               <p className="mt-2 text-xs sm:text-sm text-white/70 leading-relaxed">
-                We're building Bondura (Personal Relationship Manager) and a Client Portal template. Want early access or to collaborate?
+                We're building tools for service professionals and small teams. Want early access or to collaborate?
               </p>
               <div className="mt-4 space-y-3 text-xs text-white/60">
                 <div className="flex items-start gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-electric-blue flex-shrink-0 mt-1.5" />
-                  <span>Bondura — Relationship assistant launching 2025</span>
+                  <span>BookFlow — Client booking & intake system (Nov 2026)</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-electric-blue flex-shrink-0 mt-1.5" />
-                  <span>Client Portal — Dashboard template for agencies</span>
+                  <span>Playbook — Team SOP & workflow manager (Mar 2027)</span>
                 </div>
               </div>
               <div className="mt-5">
