@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, X } from "lucide-react";
-import upplyitDashboard from "@/components/assets/upplyitdashboard.png";
+import resulinxDashboard from "@/components/assets/resulinxdashboard.png";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 
@@ -53,8 +53,8 @@ export default function PortfolioPreview() {
             className="relative w-full h-full flex items-center justify-center"
           >
             <Image
-              src={upplyitDashboard}
-              alt="Upplyit Platform Dashboard"
+              src={resulinxDashboard}
+              alt="Resulinx Platform Dashboard"
               className="object-contain max-w-full max-h-full rounded-lg shadow-2xl"
               style={{ width: 'auto', height: 'auto', maxWidth: '95vw', maxHeight: '95vh' }}
               priority
@@ -83,7 +83,7 @@ export default function PortfolioPreview() {
           </div>
 
           <div className="grid gap-4 sm:gap-6 md:grid-cols-5 px-4 sm:px-6 md:px-0">
-            {/* Featured: Upplyit - Takes 3 columns */}
+            {/* Featured: Resulinx - Takes 3 columns */}
             <motion.article
               initial={{ y: 6, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
@@ -94,18 +94,20 @@ export default function PortfolioPreview() {
               <div className="flex flex-col gap-4 lg:flex-row">
                 <div 
                   onClick={() => setIsModalOpen(true)}
-                  className="relative w-full overflow-hidden rounded-md border border-white/10 bg-white/5 lg:w-72 cursor-pointer hover:border-white/20 transition-colors"
+                  className="relative w-full overflow-hidden rounded-lg border border-white/10 lg:w-72 aspect-video cursor-pointer hover:border-white/20 transition-colors bg-[#0d0d0d]"
                 >
                   <Image
-                    src={upplyitDashboard}
-                    alt="Upplyit Platform Dashboard"
-                    className="object-contain w-full h-auto"
+                    src={resulinxDashboard}
+                    alt="Resulinx Platform Dashboard"
+                    className="object-contain"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 288px"
                     priority
                   />
                 </div>
                 <div className="flex-1">
                   <div className="text-xs uppercase tracking-wide text-white/60">Featured Case Study</div>
-                  <h3 className="mt-1 text-base sm:text-lg text-white font-display">Upplyit — AI-Powered Resume & Career Platform</h3>
+                  <h3 className="mt-1 text-base sm:text-lg text-white font-display">Resulinx — AI-Powered Resume & Career Platform</h3>
                   <p className="mt-2 text-xs sm:text-sm text-white/70">
                     Complete SaaS platform that helps job seekers beat ATS systems with AI resume optimization, smart cover letters, and job matching — all for $9.99/month.
                   </p>
@@ -123,11 +125,11 @@ export default function PortfolioPreview() {
                     ))}
                   </ul>
                   <div className="mt-4 flex flex-col sm:flex-row gap-3">
-                    <Link href="/portfolio/upplyit" className="btn-primary">
+                    <Link href="/portfolio/resulinx" className="btn-primary">
                       Read case study
                     </Link>
                     <Link 
-                      href="https://upplyit.com" 
+                      href="https://resulinx.com" 
                       target="_blank"
                       rel="noopener noreferrer"
                       className="btn-secondary"

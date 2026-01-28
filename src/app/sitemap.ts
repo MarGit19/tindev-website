@@ -6,7 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "",
     "/services",
     "/portfolio",
-    "/portfolio/upplyit",
+    "/portfolio/resulinx",
     "/pricing",
     "/about",
     "/contact",

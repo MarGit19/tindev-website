@@ -26,7 +26,7 @@ type ShootingStar = {
   translateY: number;
 };
 
-export default function UpplyitClient() {
+export default function ResulinxClient() {
   const [smallStars, setSmallStars] = React.useState<Star[]>([]);
   const [mediumStars, setMediumStars] = React.useState<Star[]>([]);
   const [shootingStars, setShootingStars] = React.useState<ShootingStar[]>([]);
@@ -169,7 +169,7 @@ export default function UpplyitClient() {
                   Featured Case Study
                 </span>
                 <h1 className="text-3xl sm:text-4xl md:text-5xl font-display text-white mt-3 sm:mt-4">
-                  Upplyit — AI-Powered Resume & Career Platform
+                  Resulinx — AI-Powered Resume & Career Platform
                 </h1>
                 <p className="mt-3 sm:mt-4 text-white/70 text-base sm:text-lg max-w-3xl mx-auto">
                   A complete SaaS platform that helps job seekers beat ATS filters, optimize resumes with AI, generate smart cover letters, and track applications — all for just $9.99/month.
@@ -199,7 +199,7 @@ export default function UpplyitClient() {
                 Overview
               </h2>
               <p className="text-white/80 text-base sm:text-lg leading-relaxed">
-                Upplyit is a comprehensive AI-powered career platform designed to democratize job search success. The platform helps job seekers overcome the biggest barrier in modern hiring: Applicant Tracking Systems (ATS) that automatically filter out resumes before they reach human recruiters.
+                Resulinx is a comprehensive AI-powered career platform designed to democratize job search success. The platform helps job seekers overcome the biggest barrier in modern hiring: Applicant Tracking Systems (ATS) that automatically filter out resumes before they reach human recruiters.
               </p>
               <p className="text-white/80 text-base sm:text-lg leading-relaxed">
                 We built a complete SaaS solution that analyzes resumes, provides real-time ATS compatibility scoring, generates personalized cover letters, and matches users with relevant job opportunities — all powered by advanced AI technology and made accessible at just $9.99/month.
@@ -613,7 +613,7 @@ export default function UpplyitClient() {
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
               <Link 
-                href="https://upplyit.com" 
+                href="https://resulinx.com" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-secondary"

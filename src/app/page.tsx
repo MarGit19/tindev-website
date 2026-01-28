@@ -58,28 +58,28 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  // ✅ JSON-LD for Upplyit (homepage exposure as a SoftwareApplication)
-  const upplyitJsonLd = {
+  // ✅ JSON-LD for Resulinx (homepage exposure as a SoftwareApplication)
+  const resulinxJsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Upplyit",
+    name: "Resulinx",
     applicationCategory: "BusinessApplication",
     applicationSubCategory: "Career & Resume Software",
     operatingSystem: "Web",
-    url: "https://upplyit.com",
+    url: "https://resulinx.com",
     description:
       "AI-powered resume and career platform that analyzes resumes, profiles, and job descriptions to deliver targeted improvements and streamline job applications.",
     publisher: {
       "@type": "Organization",
       name: "Tin Dev Studios",
       url: "https://tindevstudios.com",
-      sameAs: ["https://tindevstudios.com/portfolio/upplyit"],
+      sameAs: ["https://tindevstudios.com/portfolio/resulinx"],
     },
     image: [
       // Use absolute URLs; swap to your live asset URLs when available
-      "https://tindevstudios.com/portfolio/upplyit/dashboard.png",
-      "https://tindevstudios.com/portfolio/upplyit/improvements.png",
-      "https://tindevstudios.com/portfolio/upplyit/match-insights.png",
+      "https://tindevstudios.com/portfolio/resulinx/dashboard.png",
+      "https://tindevstudios.com/portfolio/resulinx/improvements.png",
+      "https://tindevstudios.com/portfolio/resulinx/match-insights.png",
     ],
     // Add "offers" or "aggregateRating" later when you have accurate data
     // offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -87,12 +87,12 @@ export default function Home() {
 
   return (
     <>
-      {/* JSON-LD: Upplyit */}
+      {/* JSON-LD: Resulinx */}
       <Script
-        id="jsonld-upplyit"
+        id="jsonld-resulinx"
         type="application/ld+json"
         strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(upplyitJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(resulinxJsonLd) }}
       />
 
       <Nav />
@@ -104,7 +104,7 @@ export default function Home() {
         {/* About slice (replaces older About) */}
         <AboutTeaser />
 
-        {/* Products (features Upplyit + roadmap) */}
+        {/* Products (features Resulinx + roadmap) */}
         <ProductsPreview />
 
         {/* Portfolio preview */}

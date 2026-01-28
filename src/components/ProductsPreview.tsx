@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, ExternalLink, X } from "lucide-react";
-import upplyitSignup from "@/components/assets/upplyitsignup.png";
+import resulinxSignup from "@/components/assets/resulinxsignup.png";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 
@@ -53,8 +53,8 @@ export default function ProductsPreview() {
             className="relative w-full h-full flex items-center justify-center"
           >
             <Image
-              src={upplyitSignup}
-              alt="Upplyit signup and dashboard interface"
+              src={resulinxSignup}
+              alt="Resulinx signup and dashboard interface"
               className="object-contain max-w-full max-h-full rounded-lg shadow-2xl"
               style={{ width: 'auto', height: 'auto', maxWidth: '95vw', maxHeight: '95vh' }}
               priority
@@ -77,7 +77,7 @@ export default function ProductsPreview() {
           </div>
 
           <div className="grid items-stretch gap-4 sm:gap-6 md:grid-cols-3 px-4 sm:px-6 md:px-0">
-            {/* Upplyit */}
+            {/* Resulinx */}
             <motion.article
               initial={{ y: 6, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
@@ -88,7 +88,7 @@ export default function ProductsPreview() {
               <div className="flex flex-col gap-5 sm:gap-6 lg:flex-row">
                 <div className="flex-1">
                   <div className="text-xs uppercase tracking-wide text-white/60">SaaS Platform • $9.99/mo</div>
-                  <h3 className="mt-1 text-lg sm:text-xl text-white font-display">Upplyit — AI-Powered Resume & Career Platform</h3>
+                  <h3 className="mt-1 text-lg sm:text-xl text-white font-display">Resulinx — AI-Powered Resume & Career Platform</h3>
                   <p className="mt-2 text-sm sm:text-base text-white/70">
                     Beat ATS systems with AI resume optimization, real-time scoring (0-100), smart cover letters, and automatic job matching powered by Adzuna API.
                   </p>
@@ -109,11 +109,11 @@ export default function ProductsPreview() {
                   </ul>
 
                   <div className="mt-5 flex flex-col sm:flex-row flex-wrap gap-3">
-                    <Link href="/portfolio/upplyit" className="btn-primary">
+                    <Link href="/portfolio/resulinx" className="btn-primary">
                       Case Study
                     </Link>
                     <a 
-                      href="https://upplyit.com" 
+                      href="https://resulinx.com" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="btn-secondary"
@@ -127,12 +127,14 @@ export default function ProductsPreview() {
                 {/* Screenshot */}
                 <div 
                   onClick={() => setIsModalOpen(true)}
-                  className="relative w-full overflow-hidden rounded-md border border-white/10 bg-white/5 lg:w-80 cursor-pointer hover:border-white/20 transition-colors"
+                  className="relative w-full overflow-hidden rounded-lg border border-white/10 lg:w-80 aspect-video cursor-pointer hover:border-white/20 transition-colors bg-[#0d0d0d]"
                 >
                   <Image
-                    src={upplyitSignup}
-                    alt="Upplyit signup and dashboard interface"
-                    className="object-contain w-full h-auto"
+                    src={resulinxSignup}
+                    alt="Resulinx signup and dashboard interface"
+                    className="object-contain"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 320px"
                     priority
                   />
                 </div>

@@ -23,11 +23,6 @@ export default function Footer() {
       icon: Instagram,
     },
     {
-      name: "GitHub",
-      href: "https://github.com/tindevstudios",
-      icon: Github,
-    },
-    {
       name: "LinkedIn",
       href: "https://www.linkedin.com/company/106391461/",
       icon: Linkedin,

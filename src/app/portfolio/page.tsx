@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "web app examples",
     "SaaS projects",
     "software development portfolio",
-    "Upplyit",
+    "Resulinx",
     "project examples",
     "Dallas software portfolio",
   ],

@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Container, Section } from "@/components/ui";
-import upplyitHome from "@/components/assets/upplyithome.png";
+import resulinxHome from "@/components/assets/resulinxhome.png";
 
 export default function PortfolioClient() {
   return (
@@ -116,7 +116,7 @@ export default function PortfolioClient() {
       {/* Divider */}
       <div className="border-t border-white/10" />
 
-      {/* Featured Project: Upplyit */}
+      {/* Featured Project: Resulinx */}
       <Section pad="py-12 sm:py-16 md:py-20 lg:py-24">
         <Container>
           <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-0">
@@ -128,7 +128,7 @@ export default function PortfolioClient() {
                     Featured Project
                   </span>
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-display text-white mt-3 sm:mt-4">
-                    Upplyit — AI Resume & Career Tools
+                    Resulinx — AI Resume & Career Tools
                   </h2>
                 </div>
 
@@ -157,7 +157,7 @@ export default function PortfolioClient() {
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
                   <Link 
-                    href="https://upplyit.com" 
+                    href="https://resulinx.com" 
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary"
@@ -173,8 +173,8 @@ export default function PortfolioClient() {
               {/* Screenshot */}
               <div className="relative w-full rounded-md overflow-hidden">
                 <Image
-                  src={upplyitHome}
-                  alt="Upplyit Platform Homepage"
+                  src={resulinxHome}
+                  alt="Resulinx Platform Homepage"
                   className="w-full h-auto object-contain"
                   priority
                 />
